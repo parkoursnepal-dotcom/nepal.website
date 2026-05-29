@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nepal.web | Portfolio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html { scroll-behavior: smooth; }
+
+        :root {
+            --yt-red: #ff0000;
+            --ds-blue: #5865f2;
+            --champion-gold: #ff9d00;
+            --nepal-crimson: #DC143C;
+            --nepal-blue: #003893;
+            --neon-cyan: #00f2ff;
+            --neon-pink: #ff00cc;
+            --bg-color: #050505;
+            --card-bg: rgba(15, 15, 15, 0.9);
+            --glow-spread: 0 0 25px;
+            --nav-height: 80px;
+        }
+
+        /* --- NEW: LIVE FPS & TRACKING HUD --- */
+        .tracking-hud {
+            position: fixed;
+            top: 100px; right: 40px;
+            font-family: monospace;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            z-index: 1000;
+            text-align: right;
+            pointer-events: none;
+            background: rgba(255,255,255,0.02);
+            padding: 10px;
+            border-right: 2px solid var(--neon-cyan);
+        }
+        .tracking-hud div { margin-bottom: 4px; }
+        .tracking-hud span { color: var(--neon-cyan); font-weight: 800; }
+
+        /* --- SCANNING LINE --- */
+        .scanner-line {
+            position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            box-shadow: 0 0 15px var(--neon-cyan); z-index: 998; opacity: 0.15;
+            pointer-events: none; animation: scanMove 10s linear infinite;
+        }
+        @keyframes scanMove { 0% { top: -5%; } 100% { top: 105%; } }
+
+        /* --- WAVE TEXT ANIMATION --- */
+        .wave-text { display: inline-block; font-weight: 800; text-transform: uppercase; }
+        .wave-text span { display: inline-block; transition: all 0.3s ease; animation: letterWave 2.5s infinite; }
+        @keyframes letterWave {
+            0%, 40%, 100% { transform: scale(1); color: white; text-shadow: none; }
+            20% { transform: scale(1.3) translateY(-8px); color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); }
+        }
+        .title-flag { width: 30px; height: auto; vertical-align: middle; margin: 0 10px; display: inline-block; }
+
+        /* --- VIEWFINDER --- */
+        .viewfinder {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 999; border: 20px solid transparent; box-sizing: border-box;
+        }
+        .viewfinder::before { content: ''; position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; border-top: 2px solid white; border-left: 2px solid white; opacity: 0.1; }
+        .viewfinder::after { content: ''; position: absolute; bottom: 20px; right: 20px; width: 40px; height: 40px; border-bottom: 2px solid white; border-right: 2px solid white; opacity: 0.1; }
+
+        /* --- PROJECT HUD --- */
+        .project-info {
+            position: fixed; bottom: 30px; left: 30px; background: rgba(255,255,255,0.03);
+            padding: 12px; border-radius: 8px; border-left: 2px solid var(--neon-cyan);
+            font-family: monospace; font-size: 0.65rem; color: #777; z-index: 100; backdrop-filter: blur(8px);
+        }
+        .project-info span { color: var(--neon-cyan); }
+
+        /* --- BACKGROUND --- */
+        #particles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; overflow: hidden; pointer-events: none; }
+        .particle { position: absolute; color: rgba(255, 255, 255, 0.05); font-size: 1.2rem; animation: float-around infinite linear; }
+        @keyframes float-around { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(40px, 40px) rotate(360deg); } }
+
+        /* --- LOADER --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        .loader-logo { font-size: 3rem; font-weight: 800; letter-spacing: 5px; color: white; text-shadow: 0 0 20px var(--neon-cyan); }
+
+        /* --- GLOBAL --- */
+        body {
+            background-color: var(--bg-color); color: white; font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden; cursor: none; 
+        }
+        body::before, body::after {
+            content: ""; position: fixed; width: 80vw; height: 80vw; z-index: -1; 
+            opacity: 0.12; filter: blur(140px); border-radius: 50%;
+            animation: glowRotate 20s infinite linear;
+        }
+        body::before { top: -20%; left: -20%; background: var(--nepal-crimson); }
+        body::after { bottom: -20%; right: -20%; background: var(--nepal-blue); animation-delay: -10s; }
+        @keyframes glowRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #cursor-glow {
+            position: fixed; width: 15px; height: 15px; background: white; border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s; box-shadow: 0 0 15px white;
+        }
+        .cursor-hover { width: 50px !important; height: 50px !important; background: var(--neon-cyan) !important; opacity: 0.4; }
+
+        /* --- NAV --- */
+        nav {
+            width: 100%; height: var(--nav-height); display: flex; justify-content: space-between;
+            align-items: center; padding: 0 5%; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
+            position: sticky; top: 0; z-index: 100; box-sizing: border-box;
+            border-bottom: 1px solid rgba(255,255,255,0.05); transform: translateY(-100%); transition: 0.5s ease 0.5s;
+        }
+        body:not(.loading) nav { transform: translateY(0); }
+        .nav-links a { color: #666; text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-left: 25px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--neon-cyan); }
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 2px; background: linear-gradient(to right, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        section { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 80px 0; scroll-margin-top: var(--nav-height); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- HERO --- */
+        .hero { display: flex; align-items: center; gap: 40px; width: 90%; max-width: 1000px; }
+        .profile-pic-container { width: 160px; height: 160px; border-radius: 35px; border: 3px solid var(--neon-cyan); overflow: hidden; box-shadow: 0 0 30px rgba(0,242,255,0.3); animation: float 4s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
+        .hero-info h1 { font-size: 3.5rem; margin: 0; letter-spacing: -1px; }
+        .software-tag { display: inline-flex; background: rgba(0, 242, 255, 0.1); padding: 8px 18px; border-radius: 12px; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); font-weight: 800; margin-top: 10px; font-size: 0.8rem; }
+
+        /* --- SOCIAL CARDS --- */
+        .grid { width: 90%; max-width: 1000px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .social-card { background: var(--card-bg); border-radius: 35px; padding: 40px; border: 1px solid rgba(255,255,255,0.1); transition: 0.4s; text-decoration: none; color: white; position: relative; }
+        .social-card:hover { transform: translateY(-15px) scale(1.02); }
+        .yt-card:hover { border-color: var(--yt-red); box-shadow: 0 0 40px rgba(255, 0, 0, 0.4); }
+        .ds-card:hover { border-color: var(--ds-blue); box-shadow: 0 0 40px rgba(88, 101, 242, 0.4); }
+        
+        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; }
+        .yt-card .card-header i { color: var(--yt-red); font-size: 1.5rem; }
+        .ds-card .card-header i { color: var(--ds-blue); font-size: 1.5rem; }
+        .card-stats { font-size: 3.5rem; font-weight: 800; display: block; margin: 10px 0; background: linear-gradient(to right, #fff, var(--stat-color, #fff)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .yt-card { --stat-color: var(--yt-red); }
+        .ds-card { --stat-color: var(--ds-blue); }
+
+        /* --- MASTERPIECE --- */
+        .masterpiece-banner { width: 90%; max-width: 1000px; background: linear-gradient(135deg, rgba(255,0,204,0.05), rgba(0,242,255,0.05)); border: 2px solid var(--neon-pink); border-radius: 50px; padding: 80px 40px; text-align: center; box-sizing: border-box; overflow: hidden; }
+        .yt-btn { display: inline-flex; align-items: center; gap: 15px; padding: 20px 50px; background: var(--yt-red); color: white; text-decoration: none; border-radius: 100px; font-weight: 800; transition: 0.3s; }
+        .yt-btn:hover { transform: scale(1.1); box-shadow: 0 0 40px var(--yt-red); }
+
+        /* --- GOAL --- */
+        .goal-container { width: 90%; max-width: 1000px; background: rgba(15,15,15,0.6); padding: 50px; border-radius: 45px; border: 1px solid rgba(255,255,255,0.05); box-sizing: border-box; }
+        .bar-bg { background: #111; height: 25px; border-radius: 50px; overflow: hidden; margin: 20px 0; }
+        .bar-fill { background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan)); width: 0%; height: 100%; transition: 2.5s cubic-bezier(0.65, 0, 0.35, 1); }
+        .reveal.active .bar-fill { width: 52.5%; }
+
+        footer { padding: 60px 0; color: #333; font-size: 0.8rem; font-weight: 600; text-align: center; }
+    </style>
+</head>
+<body class="loading">
+
+    <div class="scanner-line"></div>
+    <div class="viewfinder"></div>
+
+    <!-- ADVANCED TRACKING HUD -->
+    <div class="tracking-hud">
+        <div>FPS: <span id="fps-counter">60</span></div>
+        <div>RESOLUTION: <span id="res-display">0x0</span></div>
+        <div>MOUSE_X: <span id="mouse-x">0</span></div>
+        <div>MOUSE_Y: <span id="mouse-y">0</span></div>
+    </div>
+
+    <div class="project-info">
+        <div>PROJECT: <span>NEPAL_ELITE_PORTFOLIO</span></div>
+        <div>STATUS: <span>EXPORTED_4K</span></div>
+        <div>RENDER_ENGINE: <span>CAPCUT_DESKTOP</span></div>
+    </div>
+
+    <div id="particles-container"></div>
+    <div id="cursor-glow"></div>
+
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="loader-logo">NEPAL.WEB</div>
+        <div style="width: 150px; height: 1px; background: #222; margin-top: 20px; position: relative; overflow: hidden;">
+            <div style="position: absolute; width: 100%; height: 100%; background: var(--neon-cyan); left: -100%; animation: loadSlide 1.5s infinite;"></div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo">NEPAL.WEB</div>
+        <div class="nav-links">
+            <a href="#profile">Profile</a>
+            <a href="#about">About</a>
+            <a href="#socials">Socials</a>
+            <a href="#work">Work</a>
+        </div>
+        <a href="https://youtube.com/@no1-nepal" target="_blank" class="logo clickable" style="text-decoration:none; font-size: 0.8rem; border: 1px solid white; padding: 8px 20px; border-radius: 50px; margin-left: 30px;">CONTACT →</a>
+    </nav>
+
+    <!-- PROFILE -->
+    <section id="profile">
+        <div class="hero">
+            <div class="profile-pic-container">
+                <img src="px.png" class="profile-pic" alt="Profile">
+            </div>
+            <div class="hero-info">
+                <h1>parkoursnepal <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" style="width:30px; vertical-align:middle;"></h1>
+                <div class="software-tag">CAPCUT PC EDITOR</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT (FLAGS RESTORED & WAVE EFFECT) -->
+    <section id="about" class="reveal">
+        <div style="width: 90%; max-width: 1000px; background: rgba(15,15,15,0.6); border: 2px solid var(--nepal-crimson); border-radius: 40px; padding: 50px; text-align: center;">
+            <h2 id="wave-heading" class="wave-text">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" class="title-flag">
+                Nepal's Top Editor
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" class="title-flag">
+            </h2>
+            <p style="color: var(--champion-gold); font-weight: 800; text-transform: uppercase; margin-top: 10px; letter-spacing: 2px;">Bloxd Community Elite</p>
+        </div>
+        <br>
+        <div style="width: 90%; max-width: 1000px; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 40px; line-height: 1.8;">
+            Hello, I'm <strong>parkoursnepal</strong>. I'm officially recognized as one of the <strong>Top Editors</strong> in Nepal's Bloxd community. I specialize in <strong>CapCut PC</strong>, creating high-velocity masterpieces with elite sync and motion.
+        </div>
+    </section>
+
+    <!-- SOCIALS (LOGOS & GLOW) -->
+    <section id="socials" class="reveal">
+        <div class="grid">
+            <a href="https://youtube.com/@no1-nepal" target="_blank" class="social-card yt-card clickable">
+                <div class="card-header"><i class="fab fa-youtube"></i> YOUTUBE</div>
+                <span class="card-stats">1.05K+</span>
+                <span style="font-weight: 800; border-bottom: 2px solid var(--yt-red);">SUBSCRIBE CHANNEL</span>
+            </a>
+            <a href="https://discord.gg/efwprN8cG" target="_blank" class="social-card ds-card clickable">
+                <div class="card-header"><i class="fab fa-discord"></i> DISCORD</div>
+                <span class="card-stats">10+</span>
+                <span style="font-weight: 800; border-bottom: 2px solid var(--ds-blue);">JOIN THE SQUAD</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- WORK -->
+    <section id="work" class="reveal">
+        <div class="masterpiece-banner">
+            <h2 style="font-size: 2.5rem; margin-bottom: 10px;">DAILY MASTERPIECES</h2>
+            <p style="color: #888; margin-bottom: 30px;">I drop new high-quality edits constantly. Follow my YT to catch them first!</p>
+            <a href="https://youtube.com/@no1-nepal" target="_blank" class="yt-btn clickable">
+                <i class="fab fa-youtube"></i> WATCH NEWEST EDITS
+            </a>
+        </div>
+    </section>
+
+    <!-- GOAL -->
+    <section id="goal" class="reveal">
+        <div class="goal-container">
+            <h3 style="margin: 0; font-size: 0.8rem; color: #555; letter-spacing: 2px;">ROAD TO 2,000 SUBS</h3>
+            <div class="bar-bg"><div class="bar-fill"></div></div>
+            <div style="display: flex; justify-content: space-between; font-weight: 800;">
+                <span style="color: #444;">PROGRESS</span>
+                <span style="color: var(--neon-cyan);">52.5%</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>NEPAL.WEB &copy; 2026 | BUILT FOR THE ELITE</footer>
+
+    <script>
+        // 1. WAVE TEXT SPLITTER (Handles icons correctly)
+        const waveHeading = document.getElementById('wave-heading');
+        const content = waveHeading.innerHTML;
+        // Temporary hack to keep images and split only text
+        const textOnly = " Nepal's Top Editor ";
+        const flagImg = `<img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" class="title-flag">`;
+        
+        waveHeading.innerHTML = flagImg + textOnly.split('').map((char, i) => 
+            `<span style="animation-delay: ${i * 0.1}s">${char === ' ' ? '&nbsp;' : char}</span>`
+        ).join('') + flagImg;
+
+        // 2. LIVE HUD LOGIC (FPS, Mouse, Resolution)
+        const fpsCounter = document.getElementById('fps-counter');
+        const resDisplay = document.getElementById('res-display');
+        const mouseX = document.getElementById('mouse-x');
+        const mouseY = document.getElementById('mouse-y');
+
+        let lastTime = performance.now();
+        let frameCount = 0;
+        function updateFPS() {
+            frameCount++;
+            let now = performance.now();
+            if (now - lastTime >= 1000) {
+                fpsCounter.innerText = frameCount;
+                frameCount = 0;
+                lastTime = now;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+        updateFPS();
+
+        window.addEventListener('resize', () => {
+            resDisplay.innerText = `${window.innerWidth}x${window.innerHeight}`;
+        });
+        resDisplay.innerText = `${window.innerWidth}x${window.innerHeight}`;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX.innerText = e.clientX;
+            mouseY.innerText = e.clientY;
+            
+            // Cursor movement
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
+        // 3. PARTICLES
+        const particleContainer = document.getElementById('particles-container');
+        const iconList = ['fa-scissors', 'fa-film', 'fa-bolt', 'fa-play'];
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('i');
+            p.className = `fas ${iconList[Math.floor(Math.random()*iconList.length)]} particle`;
+            p.style.left = Math.random()*100 + 'vw';
+            p.style.top = Math.random()*100 + 'vh';
+            p.style.animationDuration = (Math.random()*15 + 10)+'s';
+            particleContainer.appendChild(p);
+        }
+
+        // 4. LOADER & REVEAL
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+            setTimeout(() => {
+                document.getElementById('loader').style.transform = 'translateY(-100%)';
+                document.body.classList.remove('loading');
+                reveal();
+            }, 1800);
+        });
+
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                if (reveals[i].getBoundingClientRect().top < window.innerHeight - 100) reveals[i].classList.add("active");
+            }
+        }
+        window.addEventListener("scroll", reveal);
+
+        // 5. CURSOR HOVER
+        const glow = document.getElementById('cursor-glow');
+        const clickables = document.querySelectorAll('a, .social-card, .clickable');
+        clickables.forEach(item => {
+            item.addEventListener('mouseenter', () => glow.classList.add('cursor-hover'));
+            item.addEventListener('mouseleave', () => glow.classList.remove('cursor-hover'));
+        });
+    </script>
+</body>
+</html>
