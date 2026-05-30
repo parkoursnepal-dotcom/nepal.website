@@ -139,10 +139,12 @@
         .ranking-container { width: 90%; max-width: 1000px; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-top: 40px; }
         .ranking-card { background: var(--card-bg); border-radius: 35px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(15px); }
         .ranking-card h3 { font-size: 1.4rem; margin-bottom: 20px; background: linear-gradient(to right, #fff, var(--champion-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .rank-list { list-style: none; padding: 0; margin: 0; max-height: 450px; overflow-y: auto; padding-right: 10px; }
+        
+        /* RANK LIST SCROLLABLE */
+        .rank-list { list-style: none; padding: 0; margin: 0; max-height: 500px; overflow-y: auto; padding-right: 10px; }
         .rank-item { display: flex; align-items: center; padding: 10px 15px; border-radius: 12px; margin-bottom: 6px; border: 1px solid transparent; transition: 0.3s; }
         .rank-1 { background: rgba(255, 157, 0, 0.05); border: 1px solid rgba(255, 157, 0, 0.2); }
-        .rank-number { width: 35px; font-weight: 800; color: var(--neon-cyan); }
+        .rank-number { width: 40px; font-weight: 800; color: var(--neon-cyan); }
         .rank-name { flex-grow: 1; font-weight: 600; color: #ddd; }
         .retired { font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 8px; color: #888; }
 
@@ -249,9 +251,10 @@
     <!-- Ranking Section -->
     <section id="ranking" class="reveal">
         <h2 style="width: 90%; max-width: 1000px; color: var(--champion-gold); font-size: 2.2rem; margin-bottom: 10px;">Official Bloxd Editor Rankings</h2>
-        <p style="width: 90%; max-width: 1000px; color: #888; margin-bottom: 40px;">List by me & @NeverlessFps ⚡</p>
+        <p style="width: 90%; max-width: 1000px; color: #888; margin-bottom: 40px;">List by Migu & @NeverlessFps ⚡Updating By parkoursnepal!</p>
         
         <div class="ranking-container">
+            <!-- Long Videos Card -->
             <div class="ranking-card">
                 <h3>📺 Long Videos</h3>
                 <ul class="rank-list">
@@ -259,14 +262,16 @@
                     <li class="rank-item rank-1"><span class="rank-number">🏆</span><span class="rank-name">@YTDubbed ✓</span></li>
                     <li class="rank-item"><span class="rank-number">🥈</span><span class="rank-name">@ItzXp-YT</span></li>
                     <li class="rank-item"><span class="rank-number">🥉</span><span class="rank-name">@Bloxdman ✓</span></li>
-                    <li class="rank-item"><span class="rank-number">4</span><span class="rank-name">@KaspenPlayzzzYT</span></li>
-                    <li class="rank-item"><span class="rank-number">5</span><span class="rank-name">@DDEditzYT ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">4️⃣</span><span class="rank-name">@KaspenPlayzzzYT</span></li>
+                    <li class="rank-item"><span class="rank-number">5️⃣</span><span class="rank-name">@DDEditzYT ✓</span></li>
                     <li class="rank-item"><span class="rank-number">6</span><span class="rank-name">@Bloxd_Zetta</span></li>
                     <li class="rank-item"><span class="rank-number">7</span><span class="rank-name">@Bloxd_io_Endure</span></li>
                     <li class="rank-item"><span class="rank-number">8</span><span class="rank-name">@Isenbardus</span></li>
                     <li class="rank-item"><span class="rank-number">9</span><span class="rank-name">@Bloxdio-Beast-e</span></li>
                 </ul>
             </div>
+
+            <!-- Edits Ranking Card -->
             <div class="ranking-card">
                 <h3>❤️‍🔥 Edits Ranking</h3>
                 <ul class="rank-list">
@@ -274,19 +279,38 @@
                     <li class="rank-item rank-1"><span class="rank-number">🏆</span><span class="rank-name">@YTDubbed ✓</span></li>
                     <li class="rank-item"><span class="rank-number">🥈</span><span class="rank-name">@MiguTyies</span></li>
                     <li class="rank-item"><span class="rank-number">🥉</span><span class="rank-name">@caliophy ✓</span></li>
-                    <li class="rank-item"><span class="rank-number">4</span><span class="rank-name">@DataBloxd</span></li>
-                    <li class="rank-item"><span class="rank-number">5</span><span class="rank-name">@LLL_3YT ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">4️⃣</span><span class="rank-name">@DataBloxd</span></li>
+                    <li class="rank-item"><span class="rank-number">5️⃣</span><span class="rank-name">@LLL_3YT ✓</span></li>
                     <li class="rank-item"><span class="rank-number">6</span><span class="rank-name">@AxeFromBloxd</span></li>
                     <li class="rank-item"><span class="rank-number">7</span><span class="rank-name">@DDEditzYT ✓</span></li>
                     <li class="rank-item"><span class="rank-number">8</span><span class="rank-name">@NeverlessFps</span></li>
                     <li class="rank-item"><span class="rank-number">9</span><span class="rank-name">@NilBloxdYT</span></li>
                     <li class="rank-item"><span class="rank-number">10</span><span class="rank-name">@Noodles_Bloxd ✓</span></li>
-                    <li class="rank-item"><span class="rank-number">27</span><span class="rank-name" style="color:var(--neon-cyan);">@no1-nepal (ME)</span></li>
+                    <li class="rank-item"><span class="rank-number">11</span><span class="rank-name">@skyeeryt</span></li>
+                    <li class="rank-item"><span class="rank-number">12</span><span class="rank-name">@modox_b</span></li>
+                    <li class="rank-item"><span class="rank-number">13</span><span class="rank-name">@mythiqYT</span></li>
+                    <li class="rank-item"><span class="rank-number">14</span><span class="rank-name">@IDarkExos_gg</span></li>
+                    <li class="rank-item"><span class="rank-number">15</span><span class="rank-name">@GioSkycr7 ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">16</span><span class="rank-name">@Not_Blurido</span></li>
+                    <li class="rank-item"><span class="rank-number">17</span><span class="rank-name">@Sc4vengers</span></li>
+                    <li class="rank-item"><span class="rank-number">18</span><span class="rank-name">@bloxinnit</span></li>
+                    <li class="rank-item"><span class="rank-number">19</span><span class="rank-name">@Saadrekt</span></li>
+                    <li class="rank-item"><span class="rank-number">20</span><span class="rank-name">@AnstoYTOfficial ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">21</span><span class="rank-name">@Bloxdio_Mazin</span></li>
+                    <li class="rank-item"><span class="rank-number">22</span><span class="rank-name">@YTflameX</span></li>
+                    <li class="rank-item"><span class="rank-number">23</span><span class="rank-name">@NOT_STAMPLAT007</span></li>
+                    <li class="rank-item"><span class="rank-number">24</span><span class="rank-name">@TrueVoidz</span></li>
+                    <li class="rank-item"><span class="rank-number">25</span><span class="rank-name">@L7or-bloxd</span></li>
+                    <li class="rank-item"><span class="rank-number">26</span><span class="rank-name">@Cherryboi420YTbloxd</span></li>
+                    <li class="rank-item" style="border: 1px solid var(--neon-cyan); background: rgba(0, 242, 255, 0.05);">
+                        <span class="rank-number">27</span>
+                        <span class="rank-name" style="color:var(--neon-cyan); font-weight:800;">@no1-nepal (ME)</span>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        <!-- HALL OF FAME RESTORED -->
+        <!-- Hall of Fame - YT DUBBED -->
         <div class="hall-of-fame">
             <p style="margin: 0; font-weight: 800; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px;">Best Bloxd.io Editor Ever ❤️‍🔥</p>
             <div class="champion-name">@YTDubbed 🏆🌟🐸</div>
