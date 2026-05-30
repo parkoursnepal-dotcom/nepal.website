@@ -10,10 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- Smooth Scroll Logic --- */
-        html {
-            scroll-behavior: smooth;
-        }
+        /* --- Smooth Scroll --- */
+        html { scroll-behavior: smooth; }
 
         :root {
             --yt-red: #ff0000;
@@ -29,84 +27,7 @@
             --nav-height: 80px;
         }
 
-        /* --- BACKGROUND PARTICLES --- */
-        #particles-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -2;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.07); /* Very subtle */
-            font-size: 1.5rem;
-            user-select: none;
-            filter: blur(1px);
-            animation: float-around infinite linear;
-        }
-
-        @keyframes float-around {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, 50px) rotate(120deg); }
-            66% { transform: translate(-20px, 100px) rotate(240deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
-        }
-
-        /* --- INTRO LOADING SCREEN --- */
-        #loader {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
-        }
-
-        .loader-content { text-align: center; }
-        .loader-logo {
-            font-size: 3rem; font-weight: 800; letter-spacing: 5px;
-            color: white; text-shadow: 0 0 20px var(--neon-cyan);
-            animation: pulseGlow 2s infinite; margin-bottom: 20px;
-        }
-        .loader-bar-container {
-            width: 200px; height: 2px; background: rgba(255,255,255,0.1);
-            margin: 0 auto; position: relative; overflow: hidden;
-        }
-        .loader-bar-progress {
-            position: absolute; width: 100%; height: 100%;
-            background: var(--neon-cyan); left: -100%;
-            animation: loadProgress 1.5s infinite;
-        }
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.95); }
-        }
-        @keyframes loadProgress {
-            0% { left: -100%; }
-            50% { left: 0; }
-            100% { left: 100%; }
-        }
-
-        /* --- Scroll Reveal Classes --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        body.loading { overflow: hidden; }
-
+        /* --- Animations --- */
         @keyframes glowRotate {
             0% { background: var(--nepal-crimson); }
             25% { background: var(--neon-cyan); }
@@ -115,258 +36,141 @@
             100% { background: var(--nepal-crimson); }
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--nepal-crimson), var(--neon-pink));
-            border-radius: 10px;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column;
-            align-items: center; min-height: 100vh;
-            overflow-x: hidden; cursor: none; 
-        }
-
-        body::before, body::after {
-            content: ""; position: fixed;
-            width: 80vw; height: 80vw; z-index: -1; 
-            opacity: 0.15; filter: blur(140px);
-            border-radius: 50%; animation: glowRotate 15s infinite linear;
-        }
-        body::before { top: -20%; left: -20%; }
-        body::after { bottom: -20%; right: -20%; animation-delay: -7s; }
-
-        /* Custom Cursor */
-        #cursor-glow {
-            position: fixed; width: 20px; height: 20px;
-            background: white; border-radius: 50%;
-            pointer-events: none; z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s;
-            box-shadow: 0 0 20px white;
-        }
-        .cursor-hover {
-            width: 60px !important; height: 60px !important;
-            background: var(--neon-cyan) !important;
-            box-shadow: 0 0 30px var(--neon-cyan) !important;
-            opacity: 0.5;
-        }
-
-        nav {
-            width: 100%; height: var(--nav-height);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 5%; background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(25px); position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); box-sizing: border-box;
-            transform: translateY(-100%); transition: transform 0.5s ease 0.5s;
-        }
-        body:not(.loading) nav { transform: translateY(0); }
-
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a {
-            color: #888; text-decoration: none; font-size: 0.85rem;
-            font-weight: 600; text-transform: uppercase; transition: 0.3s;
-        }
-        .nav-links a:hover { color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
-
-        .logo { 
-            font-weight: 800; font-size: 1.2rem; letter-spacing: 1px;
-            background: linear-gradient(to right, #fff, var(--neon-cyan));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        section {
-            scroll-margin-top: var(--nav-height);
-            width: 100%; display: flex; flex-direction: column;
-            align-items: center; padding-bottom: 100px;
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            width: 90%; max-width: 1000px; margin-top: 60px;
-            display: flex; align-items: center; gap: 35px;
-            opacity: 0; transform: translateY(20px);
-            transition: all 0.8s ease 0.2s;
-        }
-        body:not(.loading) .hero { opacity: 1; transform: translateY(0); }
-
-        .profile-pic-container {
-            width: 150px; height: 150px; flex-shrink: 0;
-            border-radius: 30px; border: 3px solid var(--neon-cyan);
-            box-shadow: var(--glow-spread) rgba(0, 242, 255, 0.4);
-            overflow: hidden;
-            animation: float 4s ease-in-out infinite;
-        }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
 
-        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
-        .hero-info h1 { 
-            font-size: 3.5rem; margin: 0;
-            background: linear-gradient(to right, #fff, var(--neon-cyan), var(--nepal-blue));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            display: flex; align-items: center;
-        }
-        .software-tag {
-            display: inline-flex; background: rgba(0, 242, 255, 0.1);
-            padding: 8px 18px; border-radius: 12px;
-            border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
-            font-weight: 800; margin-top: 10px; font-size: 0.85rem;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--nepal-crimson), var(--neon-pink)); border-radius: 10px; }
+
+        body {
+            background-color: var(--bg-color); color: white;
+            font-family: 'Poppins', sans-serif; margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden; cursor: none; 
         }
 
+        /* --- Background Effects --- */
+        #particles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; overflow: hidden; pointer-events: none; }
+        .particle { position: absolute; color: rgba(255, 255, 255, 0.05); font-size: 1.2rem; user-select: none; }
+
+        body::before, body::after {
+            content: ""; position: fixed; width: 80vw; height: 80vw; z-index: -1; 
+            opacity: 0.15; filter: blur(140px); border-radius: 50%; animation: glowRotate 15s infinite linear;
+        }
+        body::before { top: -20%; left: -20%; }
+        body::after { bottom: -20%; right: -20%; animation-delay: -7s; }
+
+        /* --- Cursor --- */
+        #cursor-glow {
+            position: fixed; width: 20px; height: 20px; background: white; border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s; box-shadow: 0 0 20px white;
+        }
+        .cursor-hover { width: 60px !important; height: 60px !important; background: var(--neon-cyan) !important; opacity: 0.5; }
+
+        /* --- Loader --- */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; z-index: 10000; transition: 0.8s ease-in-out; }
+        .loader-logo { font-size: 2.5rem; font-weight: 800; letter-spacing: 5px; text-shadow: 0 0 20px var(--neon-cyan); }
+
+        /* --- Navigation --- */
+        nav {
+            width: 100%; height: var(--nav-height); display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; background: rgba(0,0,0,0.85); backdrop-filter: blur(25px);
+            position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255, 255, 255, 0.05); box-sizing: border-box;
+        }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
+        .nav-links a:hover { color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
+        .logo { font-weight: 800; font-size: 1.2rem; background: linear-gradient(to right, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        section { scroll-margin-top: var(--nav-height); width: 100%; display: flex; flex-direction: column; align-items: center; padding: 80px 0; }
+
+        /* --- Profile Hero --- */
+        .hero { width: 90%; max-width: 1000px; display: flex; align-items: center; gap: 35px; }
+        .profile-pic-container { width: 150px; height: 150px; border-radius: 30px; border: 3px solid var(--neon-cyan); box-shadow: var(--glow-spread) rgba(0, 242, 255, 0.4); overflow: hidden; animation: float 4s ease-in-out infinite; }
+        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
+        .hero-info h1 { font-size: 3.5rem; margin: 0; background: linear-gradient(to right, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; }
+        .title-flag { width: 30px; height: auto; margin: 0 10px; }
+        .software-tag { display: inline-flex; background: rgba(0, 242, 255, 0.1); padding: 8px 18px; border-radius: 12px; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); font-weight: 800; margin-top: 10px; font-size: 0.85rem; }
+
+        /* --- National Status --- */
         .national-status {
             width: 90%; max-width: 1000px;
-            background: rgba(15, 15, 15, 0.5); border: 2px solid var(--nepal-crimson);
+            background: linear-gradient(135deg, rgba(220, 20, 61, 0.15), rgba(0, 56, 147, 0.15));
+            border: 2px solid var(--nepal-crimson);
             box-shadow: var(--glow-spread) rgba(220, 20, 61, 0.2);
-            border-radius: 30px; padding: 35px; text-align: center;
-            backdrop-filter: blur(10px);
+            border-radius: 30px; padding: 40px; text-align: center;
+            backdrop-filter: blur(15px);
         }
         .national-status h2 {
-            font-size: 2.2rem; margin: 0; 
-            background: linear-gradient(to bottom, #fff, var(--champion-gold));
+            font-size: 2.5rem; margin: 0; background: linear-gradient(to bottom, #fff, var(--champion-gold));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            display: flex; justify-content: center; align-items: center;
-            text-shadow: 0 0 20px rgba(255, 157, 0, 0.2); 
+            text-transform: uppercase; display: flex; justify-content: center; align-items: center;
         }
-        .title-flag { width: 30px; height: auto; vertical-align: middle; margin: 0 10px; }
 
-        .info-box {
-            width: 90%; max-width: 1000px; box-sizing: border-box;
-            background: var(--card-bg); border: 1px solid rgba(255, 157, 0, 0.4);
-            padding: 40px; border-radius: 35px; line-height: 1.8;
-            backdrop-filter: blur(15px); font-size: 1.15rem;
-        }
+        .info-box { width: 90%; max-width: 1000px; background: var(--card-bg); border: 1px solid rgba(255, 157, 0, 0.4); padding: 40px; border-radius: 35px; line-height: 1.8; backdrop-filter: blur(15px); font-size: 1.15rem; box-sizing: border-box; }
         .info-box strong { color: var(--champion-gold); }
 
         /* --- Social Cards --- */
         .grid { width: 90%; max-width: 1000px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .social-card {
-            background: var(--card-bg); border-radius: 28px; padding: 35px;
-            border: 1px solid rgba(255,255,255,0.1); 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none; display: block; color: white;
-            position: relative; overflow: hidden;
-            backdrop-filter: blur(5px);
-        }
+        .social-card { background: var(--card-bg); border-radius: 28px; padding: 35px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; text-decoration: none; color: white; display: block; backdrop-filter: blur(10px); }
+        .yt-card:hover { border-color: var(--yt-red); box-shadow: 0 0 30px rgba(255,0,0,0.3); }
+        .ds-card:hover { border-color: var(--ds-blue); box-shadow: 0 0 30px rgba(88,101,242,0.3); }
+        .card-stats { font-size: 3.5rem; font-weight: 800; display: block; background: linear-gradient(to right, #fff, var(--stat-color, #fff)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .yt-card { --stat-color: var(--yt-red); } .ds-card { --stat-color: var(--ds-blue); }
 
-        .yt-card:hover { transform: translateY(-15px) scale(1.02); border-color: var(--yt-red); box-shadow: 0 0 40px rgba(255, 0, 0, 0.4); }
-        .ds-card:hover { transform: translateY(-15px) scale(1.02); border-color: var(--ds-blue); box-shadow: 0 0 40px rgba(88, 101, 242, 0.4); }
-        
-        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-        .card-header i { font-size: 1.5rem; }
-        .yt-card .card-header i { color: var(--yt-red); }
-        .ds-card .card-header i { color: var(--ds-blue); }
-
-        .card-label { color: #eee; font-size: 0.8rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
-
-        .card-stats { 
-            font-size: 3.5rem; font-weight: 800; display: block; margin: 10px 0;
-            background: linear-gradient(to right, #fff, var(--stat-color, #fff));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .yt-card { --stat-color: var(--yt-red); }
-        .ds-card { --stat-color: var(--ds-blue); }
-
-        .card-link-text { font-weight: bold; font-size: 0.9rem; border-bottom: 2px solid var(--stat-color); padding-bottom: 5px; }
-
-        /* --- Masterpiece Text Banner --- */
+        /* --- Masterpiece Banner --- */
         .masterpiece-banner {
             width: 90%; max-width: 1000px;
             background: linear-gradient(135deg, rgba(255, 0, 204, 0.1), rgba(0, 242, 255, 0.1));
-            border: 2px solid var(--neon-pink);
-            border-radius: 40px;
-            padding: 60px 40px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(255, 0, 204, 0.15);
-            backdrop-filter: blur(10px);
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
+            border: 2px solid var(--neon-pink); border-radius: 40px;
+            padding: 60px 40px; text-align: center;
+            box-shadow: 0 0 40px rgba(255, 0, 204, 0.15); backdrop-filter: blur(10px); box-sizing: border-box; position: relative; overflow: hidden;
         }
-        .masterpiece-banner::before {
-            content: 'NEW';
-            position: absolute; top: 20px; right: -30px;
-            background: var(--neon-pink); color: black;
-            padding: 5px 40px; transform: rotate(45deg);
-            font-weight: 900; font-size: 0.8rem;
-        }
-        .masterpiece-banner h2 {
-            font-size: 2.5rem; margin-bottom: 15px;
-            background: linear-gradient(to right, #fff, var(--neon-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .masterpiece-banner p { font-size: 1.2rem; color: #ccc; margin-bottom: 30px; line-height: 1.6; }
-        
-        .yt-btn {
-            display: inline-flex; align-items: center; gap: 15px;
-            padding: 18px 45px; background: var(--yt-red);
-            color: white; text-decoration: none; border-radius: 100px;
-            font-weight: 800; font-size: 1.1rem; text-transform: uppercase;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
-        }
+        .masterpiece-banner h2 { font-size: 2.5rem; margin-bottom: 15px; background: linear-gradient(to right, #fff, var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .yt-btn { display: inline-flex; align-items: center; gap: 15px; padding: 18px 45px; background: var(--yt-red); color: white; text-decoration: none; border-radius: 100px; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3); }
         .yt-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--yt-red); }
-        .live-icon {
-            width: 12px; height: 12px; background: white; border-radius: 50%;
-            animation: pulse-live 1s infinite;
-        }
-        @keyframes pulse-live {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
 
-        .goal-container { 
-            width: 90%; max-width: 1000px; 
-            background: rgba(20, 20, 20, 0.6); padding: 40px; 
-            border-radius: 35px; border: 1px solid rgba(255, 0, 204, 0.2); 
-            backdrop-filter: blur(10px); box-sizing: border-box;
+        /* --- Rankings --- */
+        .ranking-container { width: 90%; max-width: 1000px; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-top: 40px; }
+        .ranking-card { background: var(--card-bg); border-radius: 35px; padding: 30px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(15px); }
+        .ranking-card h3 { font-size: 1.4rem; margin-bottom: 20px; background: linear-gradient(to right, #fff, var(--champion-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .rank-list { list-style: none; padding: 0; margin: 0; max-height: 450px; overflow-y: auto; padding-right: 10px; }
+        .rank-item { display: flex; align-items: center; padding: 10px 15px; border-radius: 12px; margin-bottom: 6px; border: 1px solid transparent; transition: 0.3s; }
+        .rank-1 { background: rgba(255, 157, 0, 0.05); border: 1px solid rgba(255, 157, 0, 0.2); }
+        .rank-number { width: 35px; font-weight: 800; color: var(--neon-cyan); }
+        .rank-name { flex-grow: 1; font-weight: 600; color: #ddd; }
+        .retired { font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 8px; color: #888; }
+
+        /* Hall of Fame - YT DUBBED */
+        .hall-of-fame {
+            width: 90%; max-width: 1000px; margin-top: 40px;
+            background: linear-gradient(135deg, rgba(220, 20, 61, 0.1), rgba(0, 242, 255, 0.1));
+            border: 2px solid var(--neon-cyan); border-radius: 35px;
+            padding: 40px; text-align: center; box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
         }
-        .percentage-text {
-            font-size: 3rem; font-weight: 800; line-height: 1;
-            background: linear-gradient(to bottom, #fff, var(--neon-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .bar-bg { 
-            background: rgba(0, 0, 0, 0.6); height: 35px; border-radius: 50px; 
-            overflow: hidden; position: relative; border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .bar-fill { 
-            background: linear-gradient(90deg, #ff00cc, #7000ff, #00f2ff); 
-            background-size: 200% 100%; width: 0%; 
-            height: 100%; position: relative; border-radius: 50px;
-            transition: width 2s cubic-bezier(0.65, 0, 0.35, 1) 0.5s;
-        }
-        .reveal.active .bar-fill { width: 52.5%; }
-        
-        footer { margin: 100px 0 60px; color: #444; font-size: 0.9rem; text-align: center; }
+        .champion-name { font-size: 2.5rem; font-weight: 800; background: linear-gradient(to right, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px rgba(0, 242, 255, 0.4); }
+
+        /* --- Goal --- */
+        .goal-container { width: 90%; max-width: 1000px; background: var(--card-bg); padding: 40px; border-radius: 35px; border: 1px solid rgba(255, 0, 204, 0.2); box-sizing: border-box; }
+        .bar-bg { background: #111; height: 22px; border-radius: 20px; margin-top: 20px; overflow: hidden; }
+        .bar-fill { background: linear-gradient(90deg, var(--neon-pink), #7000ff); width: 0%; height: 100%; box-shadow: 0 0 25px var(--neon-pink); transition: 2s cubic-bezier(0.65, 0, 0.35, 1); }
+        .active .bar-fill { width: 52.5%; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+        .active { opacity: 1; transform: translateY(0); }
+
+        footer { margin: 80px 0; color: #444; font-size: 0.9rem; text-align: center; }
     </style>
 </head>
 <body class="loading">
 
-    <!-- Floating Particles Container -->
     <div id="particles-container"></div>
-
-    <!-- Intro Loading Screen -->
-    <div id="loader">
-        <div class="loader-content">
-            <div class="loader-logo">NEPAL.WEB</div>
-            <div class="loader-bar-container">
-                <div class="loader-bar-progress"></div>
-            </div>
-            <div class="loader-status" style="margin-top: 15px; font-size: 0.7rem; color: var(--neon-cyan); letter-spacing: 2px;">LOADING MASTERPIECE...</div>
-        </div>
-    </div>
-
+    <div id="loader"><div class="loader-logo logo">NEPAL.WEB</div></div>
     <div id="cursor-glow"></div>
 
     <nav>
@@ -376,19 +180,22 @@
             <a href="#about">About</a>
             <a href="#socials">Socials</a>
             <a href="#work">Work</a>
+            <a href="#ranking">Ranking</a>
             <a href="#goal">Goal</a>
         </div>
-        <a href="https://youtube.com/@no1-nepal" target="_blank" class="logo clickable" style="text-decoration:none; font-size: 0.9rem;">CONTACT →</a>
+        <a href="https://youtube.com/@no1-nepal" target="_blank" class="logo" style="text-decoration:none; font-size: 0.8rem;">CONTACT →</a>
     </nav>
 
     <!-- Profile Section -->
     <section id="profile">
         <div class="hero">
-            <div class="profile-pic-container">
-                <img src="px.png" class="profile-pic" alt="Profile">
-            </div>
+            <div class="profile-pic-container"><img src="px.png" class="profile-pic" alt="Profile"></div>
             <div class="hero-info">
-                <h1>parkoursnepal <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" class="title-flag"></h1>
+                <h1>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" class="title-flag">
+                    parkoursnepal
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" class="title-flag">
+                </h1>
                 <div class="software-tag">CAPCUT PC EDITOR</div>
             </div>
         </div>
@@ -402,9 +209,9 @@
                 Nepal's Top Editor
                 <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Flag_of_Nepal.svg" class="title-flag">
             </h2>
-            <p>Ranked #1 in Nepal's Bloxd Community</p>
+            <p style="font-size: 1.2rem; font-weight: 600; color: #ddd; margin-top: 10px;">Ranked #1 in Nepal's Bloxd Community</p>
         </div>
-        <br>
+        <br><br>
         <div class="info-box">
             Hello, It's me <strong>parkoursnepal</strong>. I'm officially recognized as one of the <strong>Top Editors</strong> of Nepal. I specialize exclusively in <strong>CapCut PC</strong>, pushing the limits of professional desktop editing. Join our <strong>Discord</strong> for elite tips and sub on YT for the road to <strong>2k!</strong>
         </div>
@@ -412,24 +219,17 @@
 
     <!-- Socials Section -->
     <section id="socials" class="reveal">
-        <h2 style="width: 90%; max-width: 1000px; color: var(--neon-cyan); margin-bottom: 20px;">Connect With Me</h2>
+        <h2 style="width: 90%; max-width: 1000px; color: var(--neon-cyan); font-size: 2.2rem; margin-bottom: 30px;">Connect With Me</h2>
         <div class="grid">
             <a href="https://youtube.com/@no1-nepal" target="_blank" class="social-card yt-card clickable">
-                <div class="card-header">
-                    <i class="fab fa-youtube"></i>
-                    <span class="card-label">YouTube</span>
-                </div>
+                <span style="color: #666; font-size: 0.8rem; text-transform: uppercase; font-weight: 800;">YouTube</span>
                 <span class="card-stats">1.05K+</span>
-                <span class="card-link-text">SUBSCRIBE CHANNEL</span>
+                <span style="color: white; font-weight: bold; border-bottom: 2px solid var(--yt-red); font-size: 0.8rem;">SUBSCRIBE CHANNEL</span>
             </a>
-
             <a href="https://discord.gg/efwprN8cG" target="_blank" class="social-card ds-card clickable">
-                <div class="card-header">
-                    <i class="fab fa-discord"></i>
-                    <span class="card-label">Discord</span>
-                </div>
+                <span style="color: #666; font-size: 0.8rem; text-transform: uppercase; font-weight: 800;">Discord</span>
                 <span class="card-stats">10+</span>
-                <span class="card-link-text">JOIN THE SQUAD</span>
+                <span style="color: white; font-weight: bold; border-bottom: 2px solid var(--ds-blue); font-size: 0.8rem;">JOIN THE SQUAD</span>
             </a>
         </div>
     </section>
@@ -438,106 +238,116 @@
     <section id="work" class="reveal">
         <div class="masterpiece-banner">
             <h2>Latest Masterpieces</h2>
-            <p>I'm dropping high-quality edits faster than I can update this site! <br> To catch my newest "Masterpieces" every day, head over to my YouTube channel.</p>
+            <p style="color: #ccc; margin-bottom: 30px; font-size: 1.1rem;">I drop high-quality edits daily on my YouTube channel. <br> Come see the newest masterpieces live now!</p>
             <a href="https://youtube.com/@no1-nepal" target="_blank" class="yt-btn clickable">
                 <i class="fab fa-youtube"></i>
-                Watch Newest Edits
+                Watch on YouTube
             </a>
+        </div>
+    </section>
+
+    <!-- Ranking Section -->
+    <section id="ranking" class="reveal">
+        <h2 style="width: 90%; max-width: 1000px; color: var(--champion-gold); font-size: 2.2rem; margin-bottom: 10px;">Official Bloxd Editor Rankings</h2>
+        <p style="width: 90%; max-width: 1000px; color: #888; margin-bottom: 40px;">List by me & @NeverlessFps ⚡</p>
+        
+        <div class="ranking-container">
+            <div class="ranking-card">
+                <h3>📺 Long Videos</h3>
+                <ul class="rank-list">
+                    <li class="rank-item"><span class="rank-number">1</span><span class="rank-name">@YTKingDream</span><span class="retired">Retired</span></li>
+                    <li class="rank-item rank-1"><span class="rank-number">🏆</span><span class="rank-name">@YTDubbed ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">🥈</span><span class="rank-name">@ItzXp-YT</span></li>
+                    <li class="rank-item"><span class="rank-number">🥉</span><span class="rank-name">@Bloxdman ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">4</span><span class="rank-name">@KaspenPlayzzzYT</span></li>
+                    <li class="rank-item"><span class="rank-number">5</span><span class="rank-name">@DDEditzYT ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">6</span><span class="rank-name">@Bloxd_Zetta</span></li>
+                    <li class="rank-item"><span class="rank-number">7</span><span class="rank-name">@Bloxd_io_Endure</span></li>
+                    <li class="rank-item"><span class="rank-number">8</span><span class="rank-name">@Isenbardus</span></li>
+                    <li class="rank-item"><span class="rank-number">9</span><span class="rank-name">@Bloxdio-Beast-e</span></li>
+                </ul>
+            </div>
+            <div class="ranking-card">
+                <h3>❤️‍🔥 Edits Ranking</h3>
+                <ul class="rank-list">
+                    <li class="rank-item"><span class="rank-number">1</span><span class="rank-name">@Thinkin_Chen</span><span class="retired">Retired</span></li>
+                    <li class="rank-item rank-1"><span class="rank-number">🏆</span><span class="rank-name">@YTDubbed ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">🥈</span><span class="rank-name">@MiguTyies</span></li>
+                    <li class="rank-item"><span class="rank-number">🥉</span><span class="rank-name">@caliophy ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">4</span><span class="rank-name">@DataBloxd</span></li>
+                    <li class="rank-item"><span class="rank-number">5</span><span class="rank-name">@LLL_3YT ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">6</span><span class="rank-name">@AxeFromBloxd</span></li>
+                    <li class="rank-item"><span class="rank-number">7</span><span class="rank-name">@DDEditzYT ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">8</span><span class="rank-name">@NeverlessFps</span></li>
+                    <li class="rank-item"><span class="rank-number">9</span><span class="rank-name">@NilBloxdYT</span></li>
+                    <li class="rank-item"><span class="rank-number">10</span><span class="rank-name">@Noodles_Bloxd ✓</span></li>
+                    <li class="rank-item"><span class="rank-number">27</span><span class="rank-name" style="color:var(--neon-cyan);">@no1-nepal (ME)</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HALL OF FAME RESTORED -->
+        <div class="hall-of-fame">
+            <p style="margin: 0; font-weight: 800; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px;">Best Bloxd.io Editor Ever ❤️‍🔥</p>
+            <div class="champion-name">@YTDubbed 🏆🌟🐸</div>
         </div>
     </section>
 
     <!-- Goal Section -->
     <section id="goal" class="reveal">
         <div class="goal-container">
-            <div class="goal-header">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                 <div>
-                    <h3 style="margin: 0; font-size: 0.9rem; color: #888; text-transform: uppercase; letter-spacing: 2px;">Community Goal</h3>
-                    <p style="margin: 0; font-size: 1.4rem; font-weight: 800; color: #fff;">Road to 2,000 Subscribers</p>
+                    <span style="color: #666; text-transform: uppercase; font-size: 0.8rem; font-weight: 800;">Road to Milestone</span>
+                    <h3 style="margin: 0; font-size: 2.2rem; background: linear-gradient(to right, #fff, var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">2,000 Subscribers</h3>
                 </div>
-                <div class="percentage-text">52.5%</div>
+                <span style="font-weight: 800; font-size: 2.8rem; color: var(--neon-pink);">52.5%</span>
             </div>
-            <div class="bar-bg">
-                <div class="bar-fill"></div>
-            </div>
+            <div class="bar-bg"><div class="bar-fill"></div></div>
         </div>
     </section>
 
-    <footer>
-        &copy; 2026 NEPAL.WEB | BUILT BY @NO1-NEPAL | NEPAL'S ELITE
-    </footer>
+    <footer>&copy; 2026 NEPAL.WEB | BUILT BY @NO1-NEPAL | NEPAL'S ELITE</footer>
 
     <script>
-        // --- 1. Background Particles Script ---
-        const particleContainer = document.getElementById('particles-container');
-        const icons = ['fa-scissors', 'fa-film', 'fa-music', 'fa-bolt', 'fa-play', 'fa-wand-magic-sparkles'];
-        
-        function createParticles() {
-            for (let i = 0; i < 25; i++) {
-                const particle = document.createElement('i');
-                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-                
-                particle.className = `fas ${randomIcon} particle`;
-                
-                // Randomize positions
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = Math.random() * 100 + 'vh';
-                
-                // Randomize sizes and speeds
-                const size = Math.random() * 20 + 10;
-                particle.style.fontSize = size + 'px';
-                
-                const duration = Math.random() * 20 + 10;
-                particle.style.animationDuration = duration + 's';
-                particle.style.animationDelay = (Math.random() * 5) + 's';
-                
-                particleContainer.appendChild(particle);
-            }
+        // Background Particles
+        const container = document.getElementById('particles-container');
+        const icons = ['fa-bolt', 'fa-play', 'fa-film', 'fa-scissors'];
+        for(let i=0; i<30; i++) {
+            const p = document.createElement('i');
+            p.className = `fas ${icons[Math.floor(Math.random()*icons.length)]} particle`;
+            p.style.left = Math.random()*100+'vw'; p.style.top = Math.random()*100+'vh';
+            p.style.animationDuration = Math.random()*20+10+'s';
+            container.appendChild(p);
         }
-        createParticles();
 
-        // Parallax effect for particles
-        document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            particleContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        });
-
-        // --- 2. Existing Scripts (Loader, Reveal, Cursor) ---
+        // Loader Script
         window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-            const loader = document.getElementById('loader');
             setTimeout(() => {
-                loader.style.transform = 'translateY(-100%)';
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
                 document.body.classList.remove('loading');
                 reveal();
-            }, 1800);
+            }, 1500);
         });
 
+        // Scroll Reveal Script
         function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
-            }
+            document.querySelectorAll('.reveal').forEach(el => {
+                if(el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+            });
         }
-        window.addEventListener("scroll", reveal);
+        window.addEventListener('scroll', reveal);
 
+        // Custom Cursor Glow
         const glow = document.getElementById('cursor-glow');
-        document.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
+        document.addEventListener('mousemove', e => {
+            glow.style.left = e.clientX+'px'; glow.style.top = e.clientY+'px';
         });
-
-        const clickables = document.querySelectorAll('a, .social-card, button, .clickable');
-        clickables.forEach(item => {
-            item.addEventListener('mouseenter', () => glow.classList.add('cursor-hover'));
-            item.addEventListener('mouseleave', () => glow.classList.remove('cursor-hover'));
+        document.querySelectorAll('a, .social-card, .ranking-card').forEach(el => {
+            el.addEventListener('mouseenter', () => glow.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => glow.classList.remove('cursor-hover'));
         });
     </script>
-
 </body>
 </html>
